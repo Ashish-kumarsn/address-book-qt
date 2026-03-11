@@ -1,0 +1,43 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Qt and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            qtbase5-dev \
+            qtbase5-dev-tools \
+            qt5-qmake \
+            libqt5sql5-sqlite \
+            libqt5test5t64
+
+      - name: Build main application
+        run: |
+          BUILD_DIR=$(find $GITHUB_WORKSPACE -name "addressbook.pro" -exec dirname {} \;)
+          echo "Found project at: $BUILD_DIR"
+          cd $BUILD_DIR
+          qmake addressbook.pro
+          make -j$(nproc)
+
+      - name: Build and run tests
+        run: |
+          TEST_DIR=$(find $GITHUB_WORKSPACE -name "tests.pro" -exec dirname {} \;)
+          echo "Found tests at: $TEST_DIR"
+          cd $TEST_DIR
+          qmake tests.pro
+          make -j$(nproc)
+          ./build/tst_addressbook
