@@ -17,6 +17,10 @@ A simple yet fully featured desktop Address Book application built with **Qt 5**
 
 ---
 
+## Screenshot
+
+![Address Book Application](docs/images/screenshot.png)
+
 ## Requirements
 
 - Debian / Ubuntu Linux
@@ -82,3 +86,7 @@ Contacts are stored in a SQLite database at:
 ## License
 
 MIT License
+
+
+
+
