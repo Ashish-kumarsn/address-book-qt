@@ -27,13 +27,17 @@ jobs:
 
       - name: Build main application
         run: |
-          cd ${{ github.workspace }}/address-book-qt
+          BUILD_DIR=$(find $GITHUB_WORKSPACE -name "addressbook.pro" -exec dirname {} \;)
+          echo "Found project at: $BUILD_DIR"
+          cd $BUILD_DIR
           qmake addressbook.pro
           make -j$(nproc)
 
       - name: Build and run tests
         run: |
-          cd ${{ github.workspace }}/address-book-qt/tests
+          TEST_DIR=$(find $GITHUB_WORKSPACE -name "tests.pro" -exec dirname {} \;)
+          echo "Found tests at: $TEST_DIR"
+          cd $TEST_DIR
           qmake tests.pro
           make -j$(nproc)
           ./build/tst_addressbook
