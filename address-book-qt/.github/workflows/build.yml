@@ -27,13 +27,13 @@ jobs:
 
       - name: Build main application
         run: |
-          cd ${{ github.workspace }}
+          cd ${{ github.workspace }}/address-book-qt
           qmake addressbook.pro
           make -j$(nproc)
 
       - name: Build and run tests
         run: |
-          cd ${{ github.workspace }}/tests
+          cd ${{ github.workspace }}/address-book-qt/tests
           qmake tests.pro
           make -j$(nproc)
           ./build/tst_addressbook
